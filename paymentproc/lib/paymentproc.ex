@@ -26,6 +26,9 @@ defmodule Paymentproc do
       }
     end)
     |> Flow.reject(&(&1.status == "CLOSED" || &1.status == "status"))
+    |> Flow.reduce(fn -> %{} end, fn item, acc ->
+      Map.update(acc, item.tenant, 1, &(&1 + 1))
+    end)
     |> Enum.to_list()
   end
 
