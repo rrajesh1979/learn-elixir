@@ -1,4 +1,7 @@
 defmodule AsyncSender do
+  def send_email("konnichiwa@world.com" = _email),
+    do: :error
+
   def send_email(email) do
     Process.sleep(3000)
     IO.puts("Email to #{email} sent")
