@@ -10,6 +10,14 @@ defmodule Sender.Application do
     children = [
       # Starts a worker by calling: Sender.Worker.start_link(arg)
       # {Sender.Worker, arg}
+      %{
+        id: Sender.EmailTaskSupervisor,
+        start: {
+          Task.Supervisor,
+          :start_link,
+          [[name: Sender.EmailTaskSupervisor]]
+        }
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

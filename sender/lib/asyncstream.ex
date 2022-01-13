@@ -1,4 +1,4 @@
-defmodule SlowSender do
+defmodule AsyncStream do
   def send_email(email) do
     Process.sleep(3000)
     IO.puts("Email to #{email} sent")
@@ -6,10 +6,8 @@ defmodule SlowSender do
   end
 
   def notify_all(emails) do
-    Enum.each(emails, fn email ->
-      Task.start(fn ->
-        send_email(email)
-      end)
-    end)
+    emails
+    |> Task.async_stream(&send_email/1, ordered: false)
+    |> Enum.to_list()
   end
 end
